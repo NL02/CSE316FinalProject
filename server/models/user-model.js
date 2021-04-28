@@ -1,33 +1,34 @@
 const { model, Schema, ObjectId } = require('mongoose');
-const MapItem = require('./map-model').schema;
 
-const todolistSchema = new Schema(
+const userSchema = new Schema(
 	{
 		_id: {
 			type: ObjectId,
 			required: true
 		},
-
-		name: {
+		firstName: {
 			type: String,
 			required: true
 		},
-		owner: {
+		lastName: {
 			type: String,
 			required: true
 		},
-		maps: [MapItem],
-		sortRule: {
-			type: String, 
+		initials: {
+			type: String,
 			required: true
 		},
-		sortDirection: {
-			type: Number, 
+		email: {
+			type: String,
+			required: true
+		},
+		password: {
+			type: String,
 			required: true
 		}
 	},
 	{ timestamps: true }
 );
 
-const Todolist = model('Todolist', todolistSchema);
-module.exports = Todolist;
+const User = model('User', userSchema);
+module.exports = User;
