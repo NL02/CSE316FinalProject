@@ -23,8 +23,38 @@ export const REGISTER = gql`
 		}
 	}
 `;
+
+export const UPDATE = gql`
+	mutation Update($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+		update(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
+			email
+			password
+			firstName
+			lastName
+		}
+	}
+`;
+
 export const LOGOUT = gql`
 	mutation Logout {
 		logout 
+	}
+`;
+
+export const ADD_MAP = gql`
+	mutation AddMap($map: MapInput!) {
+		addMap(map: $map) {
+			_id
+			name
+			owner
+			regions {
+				_id
+				name
+				capital
+				leader
+				landmark
+				sub_region
+			}
+		}
 	}
 `;
