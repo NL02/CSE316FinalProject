@@ -1,5 +1,5 @@
 const { model, Schema, ObjectId } = require('mongoose');
-const Item = require('./item-model').schema;
+const Region = require('./region-model').schema;
 
 const mapSchema = new Schema(
 	{
@@ -16,7 +16,7 @@ const mapSchema = new Schema(
 			type: String,
 			required: true
 		},
-		items: [Item]
+		regions: [Region]
 		// sortRule: {
 		// 	type: String, 
 		// 	required: true
@@ -29,5 +29,5 @@ const mapSchema = new Schema(
 	{ timestamps: true }
 );
 
-const Map = model('Todolist', mapSchema);
+const Map = model('Map', mapSchema); //Was 'Todolist' instead of 'Map'
 module.exports = Map;
