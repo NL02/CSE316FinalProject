@@ -25,7 +25,7 @@ module.exports = {
             });
             const updated = await newMap.save();
             if (updated) {
-                console.log(newMap)
+                // console.log(newMap)
                 return newMap;
             }
         },

@@ -30,7 +30,7 @@ const CreateMap = (props) => {
             owner: props.user._id,
             regions: []
         }
-        console.log(mapCreated)
+        // console.log(mapCreated)
         const { loading, error ,data } = await AddMap({ variables: { map: mapCreated }, refetchQueries:[{ query: GET_DB_MAPS }] });
         if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };

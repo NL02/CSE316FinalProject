@@ -4,13 +4,6 @@ import {WLayout, WLHeader, WLSide, WLMain, WLFooter} from 'wt-frontend';
 import WButton from 'wt-frontend/build/components/wbutton/WButton';
 
 const MapContents = (props) => {
-    // let entries = props.activeMap ? props.activeMap.regions : null
-    // let entryCount = 0;
-    // if (entries) {
-    //     entries = entries.filter(entry => entry !== null);
-    //     entryCount = entries.length
-    // }
-
     return (
         <div className=' table-entries container-primary '>
     
