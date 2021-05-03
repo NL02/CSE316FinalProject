@@ -2,9 +2,11 @@ import Logo 							from '../navbar/Logo';
 import Login                            from '../modals/Login';
 import CreateAccount 					from '../modals/CreateAccount';
 import Update                           from '../modals/Update';
+import CreateMap                        from '../modals/CreateMap';
+import DeleteMap                        from '../modals/DeleteMap'
 import Landing                          from '../main/Landing';
 import NavbarOptions 					from '../navbar/NavbarOptions';
-
+import MapContents                      from '../main/MapContents';
 import { GET_DB_MAPS}                   from '../../cache/queries'
 import React, { useState } 				from 'react';
 import { useQuery }                     from '@apollo/client';
@@ -15,12 +17,13 @@ import { WLayout, WLHeader, WLMain, WLSide, WCard } from 'wt-frontend';
 const Homescreen = (props) => {
     const auth = props.user === null ? false : true;
     let maplists = [];
+    let MapData = [];
     const [activeMap, setActiveMap]         = useState({})
-    const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
     const [showUpdate, toggleShowUpdate] 	= useState(false);
-
+    const [showCreateMap, toggleShowCreateMap] = useState(false);
+    const [showDeleteMap, toggleShowDeleteMap] = useState(false);
     const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
     
     if (loading) { console.log(loading, 'loading');}
@@ -30,7 +33,12 @@ const Homescreen = (props) => {
         for (let map of data.getAllMaps) {
             maplists.push(map)
         }
-        console.log(maplists)
+        console.log(data)
+        for(let map of maplists) {
+            if (map) {
+                MapData.push({_id: map._id, name: map.name})
+            }
+        }
     }
     const loadMapList = (list) => {
         props.tps.clearAllTransaction();
@@ -38,34 +46,47 @@ const Homescreen = (props) => {
     }
 
     const setShowLogin = () => {
-		toggleShowDelete(false);
+		toggleShowDeleteMap(false);
 		toggleShowCreate(false);
         toggleShowUpdate(false);
+        toggleShowCreateMap(false);
 		toggleShowLogin(!showLogin);
 	};
 
     const setShowCreate = () => {
-		toggleShowDelete(false);
+		toggleShowDeleteMap(false);
 		toggleShowLogin(false);
         toggleShowUpdate(false);
+        toggleShowCreateMap(false);
 		toggleShowCreate(!showCreate);
 	};
 
-	const setShowDelete = () => {
+	const setShowDeleteMap = () => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
         toggleShowUpdate(false);
-		toggleShowDelete(!showDelete)
+        toggleShowCreateMap(false);
+		toggleShowDeleteMap(!showDeleteMap)
 	};
 
     const setShowUpdate = () => {
-        toggleShowDelete(false);
+        toggleShowDeleteMap(false);
 		toggleShowLogin(false);
 		toggleShowCreate(false);
+        toggleShowCreateMap(false);
         toggleShowUpdate(!showUpdate)
     }
-    // method that handles when clickignn on a map and changing the route to the map's region
-
+    const setShowCreateMap =() => {
+        toggleShowDeleteMap(false);
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+        toggleShowUpdate(false)
+        toggleShowCreateMap(!showCreateMap);
+    }
+    // method that handles when clicking on a map and changing the route to the map's region
+    const setLookingAt = (listId) => {
+        setActiveMap(listId)
+    }
     return ( 
         <WLayout wLayout="header">
             <WLHeader>
@@ -87,16 +108,19 @@ const Homescreen = (props) => {
 			</WLHeader>
             <WLMain>
                     {
-                        activeMap ?
+                        auth ?
                             <div className="container-secondary">
-                                {/* <Map chosenregion={chosenregion}>
-
-                                    </Map>  */}
-                                    <Landing></Landing>
+                                <MapContents 
+                                mapData={MapData} auth={auth}   
+                                setShowCreateMap={setShowCreateMap} setShowDeleteMap={setShowDeleteMap}
+                                setLookingAt={setLookingAt}
+                                // createNewMap={createNewMap}     updateMapName={updateMapName}
+                                activeMap={activeMap}
+                                /> 
                             </div>
                             :
-                            <div className="container-secondary"> 
-                                <Landing></Landing>
+                            <div className="container-secondary">  
+                            <Landing></Landing>                         
                             </div>
                     }
             </WLMain>
@@ -108,6 +132,12 @@ const Homescreen = (props) => {
             }
             {
                 showUpdate && (<Update fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} user={props.user}/>)
+            }
+            {
+                showCreateMap && (<CreateMap fetchUser={props.fetchUser} setShowCreateMap={setShowCreateMap} user={props.user}/>)
+            }
+            {   
+                showDeleteMap && (<DeleteMap fetchUser={props.fetchUser} setShowDeleteMap={setShowDeleteMap} activeMap={activeMap} user={props.user}/>)
             }
         </WLayout>
     );

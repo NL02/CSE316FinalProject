@@ -53,8 +53,14 @@ export const ADD_MAP = gql`
 				capital
 				leader
 				landmark
-				sub_region
+				subregions
 			}
 		}
+	}
+`;
+
+export const DELETE_MAP = gql`
+	mutation DeleteMap($_id: String!) {
+		deleteMap(_id: $_id)
 	}
 `;

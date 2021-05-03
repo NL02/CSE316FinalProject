@@ -4,7 +4,7 @@ const Map = require('../models/map-model');
 module.exports = {
     Query: {
         getAllMaps: async(_, __, { req }) => {
-            const _id = new ObjectId(req.userID);
+            const _id = new ObjectId(req.userId);
             if(!_id) { return([])};
             const maplists = await Map.find({owner: _id}).sort({updatedAt: 'descending'});
             if (maplists) {

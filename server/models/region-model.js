@@ -22,7 +22,10 @@ const regionSchema = new Schema(
             type: String,
             required: false
         }], 
-        sub_region:[this]
+        subregion:[{
+			type: String,
+			required: false
+		}],
 	}
 );
 

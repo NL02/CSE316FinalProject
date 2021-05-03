@@ -22,7 +22,6 @@ export const GET_DB_MAPS = gql`
 				capital
 				leader
 				landmark
-				sub_region
 			}
 		}
 	}

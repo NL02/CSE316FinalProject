@@ -13,7 +13,7 @@ const typeDefs = gql `
         capital: String!
         leader: String!
         landmark: [String]
-        sub_regions: [Region]
+        subregions:[String]
     }
     extend type Query {
         getAllMaps: [Map]
@@ -36,7 +36,7 @@ const typeDefs = gql `
         capital: String
         leader: String
         landmark: [String]
-        sub_regions:[RegionInput]
+        subregions:[RegionInput]
     }
 `;
 

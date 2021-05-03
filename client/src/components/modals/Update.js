@@ -9,7 +9,6 @@ const Update = (props) => {
 	const [loading, toggleLoading] = useState(false);
     const [userValues, toggleVal] = useState(true);
 	const [Update] = useMutation(UPDATE);
-    const [Logout] = useMutation(LOGOUT)
     const client = useApolloClient();
 	const updateInput = (e) => {
 		const { name, value } = e.target;
@@ -39,15 +38,13 @@ const Update = (props) => {
 			// }
             // Logout();
             let reset = await client.resetStore();
-            // if (reset) props.setActiveList({});
+            // if (reset) props.setActiveMap({});
 
 			props.setShowUpdate(false);
 
 		};
 	};
-    const testingVal = async (e) => {
-        console.log(props);
-    }
+
 	return (
 		<WModal className="signup-modal"  cover="true" visible={props.setShowUpdate}>
 			<WMHeader  className="modal-header" onClose={() => props.setShowUpdate(false)}>
