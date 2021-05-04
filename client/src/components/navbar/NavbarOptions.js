@@ -2,10 +2,17 @@ import React                                from 'react';
 import { LOGOUT }                           from '../../cache/mutations';
 import { useMutation, useApolloClient }     from '@apollo/client';
 import { WButton, WNavItem }                from 'wt-frontend';
+import { GET_DB_USER }                      from '../../cache/queries'
+import { useQuery }                         from '@apollo/client';
 
 const LoggedIn = (props) => {
     const client = useApolloClient();
+    console.log()
 	const [Logout] = useMutation(LOGOUT);
+    const { data } = useQuery(GET_DB_USER);
+    console.log(data.getCurrentUser.firstName)
+    const firstName = data.getCurrentUser.firstName
+    const lastName = data.getCurrentUser.lastName
     const handleLogout = async (e) => {
         Logout();
         const { data } = await props.fetchUser();
@@ -15,12 +22,15 @@ const LoggedIn = (props) => {
         }
     };
     
+    const print = async (e) => {
+        console.log(props)
+    }
 
     return (
         <>
         <WNavItem hoverAnimation="lighten">
             <WButton className="navbar-options" onClick={props.setShowUpdate} wType="texted" hoverAnimation="text-primary">
-                Update
+                {firstName + " " + lastName}
             </WButton>
         </WNavItem >
         <WNavItem hoverAnimation="lighten">

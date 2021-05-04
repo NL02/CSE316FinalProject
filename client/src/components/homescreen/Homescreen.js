@@ -10,9 +10,10 @@ import MapContents                      from '../main/MapContents';
 import { GET_DB_MAPS}                   from '../../cache/queries'
 import React, { useState } 				from 'react';
 import { useQuery }                     from '@apollo/client';
+import{ Link }                          from "react-router-dom";
 // import { useMutation, useQuery } 		from '@apollo/client';
-import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide, WCard } from 'wt-frontend';
+import { WNavbar, WNavItem } 	from 'wt-frontend';
+import { WLayout, WLHeader, WLMain, WButton } from 'wt-frontend';
 
 const Homescreen = (props) => {
     const auth = props.user === null ? false : true;
@@ -33,7 +34,7 @@ const Homescreen = (props) => {
         for (let map of data.getAllMaps) {
             maplists.push(map)
         }
-        console.log(data)
+        console.log(props.user)
         for(let map of maplists) {
             if (map) {
                 MapData.push({_id: map._id, name: map.name})
@@ -93,14 +94,18 @@ const Homescreen = (props) => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' />
+                            {/* <Link to="/home"> */}
+                            <div onClick={() => {console.log(props.user)}}>
+							<Logo className='logo' /></div>
+
+                            {/* </Link> */}
 						</WNavItem>
 					</ul>
 					<ul>
 						<NavbarOptions
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
-                            setShowUpdate={setShowUpdate}   user={props.user}
+                            setShowUpdate={setShowUpdate}   
 							reloadTodos={refetch} 			setActivemap={loadMapList}
 						/>
 					</ul>

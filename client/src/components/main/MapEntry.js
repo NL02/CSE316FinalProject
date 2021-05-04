@@ -15,7 +15,7 @@ const MapEntry = (props) => {
     return (
         <WRow className="table-entry">
             <WCol size="9">
-                {name}
+                <div>{name}</div>
             </WCol>
             <WCol size="3">
                 <WButton className="table-entry-buttons" onClick={handleDelete} wType="texted">
