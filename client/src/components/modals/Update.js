@@ -5,7 +5,8 @@ import { useMutation, useApolloClient }    	from '@apollo/client';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const Update = (props) => {
-	const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: '' });
+	const userEmail = props.user.email ? props.user.email : ``
+	const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: '', userEmail: `${userEmail}` });
 	const [loading, toggleLoading] = useState(false);
     const [userValues, toggleVal] = useState(true);
 	const [Update] = useMutation(UPDATE);
@@ -15,7 +16,7 @@ const Update = (props) => {
 		const updated = { ...input, [name]: value };
 		setInput(updated);
 	};
-
+	
 	const handleUpdateAccount = async (e) => {
 		for (let field in input) {
 			if (!input[field]) {
@@ -23,6 +24,8 @@ const Update = (props) => {
 				return;
 			}
 		}
+		console.log(input.userEmail)
+		console.log(input)
 		const { loading, error, data } = await Update({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
@@ -30,14 +33,8 @@ const Update = (props) => {
 			console.log(data)
 			toggleLoading(false);
             toggleVal(false);
-			// if(data.register.email === 'already exists') {
-			// 	alert('User with that email already registered');
-			// }
-			// else {
-			// 	props.fetchUser();
-			// }
-            // Logout();
-            let reset = await client.resetStore();
+			props.fetchUser();
+            // let reset = await client.resetStore();
             // if (reset) props.setActiveMap({});
 
 			props.setShowUpdate(false);

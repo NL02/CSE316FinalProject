@@ -94,11 +94,9 @@ const Homescreen = (props) => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-                            {/* <Link to="/home"> */}
-                            <div onClick={() => {console.log(props.user)}}>
-							<Logo className='logo' /></div>
-
-                            {/* </Link> */}
+                            <Link to="/home">
+							<Logo className='logo' />
+                            </Link>
 						</WNavItem>
 					</ul>
 					<ul>

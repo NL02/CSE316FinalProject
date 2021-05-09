@@ -81,8 +81,12 @@ module.exports = {
 		 * @returns {boolean} 
 		 */
 		update: async (_, args, { res}) => {
-			const { email, password, firstName, lastName } = args;
-			const user = await User.findOne({email: email});
+			const { email, password, firstName, lastName, userEmail } = args;
+			console.log(args)
+			console.log("INSIDE UPDATE")
+			console.log(userEmail)
+			const user = await User.findOne({email: userEmail});
+			
 			const _id = user._id;
 			// if(user) {
 			// 	console.log('User with that email already registered.');
