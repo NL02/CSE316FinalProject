@@ -1,5 +1,6 @@
 const ObjectId = require('mongoose').Types.ObjectId;
 const Map = require('../models/map-model');
+const Region = require('../models/region-model')
 
 module.exports = {
     Query: {
@@ -36,6 +37,25 @@ module.exports = {
             const deleted = await Map.deleteOne({_id: objectId});
             if(deleted) return true;
             else return false
+        },
+        
+        addRegion: async(_, args) => {
+            const { subregion } = args;
+            const objectId = new ObjectId();
+            const { id, name, capital, leader, landmark, subregions} = subregion;
+            const newRegion = new Region({
+                _id: objectId,
+                name: name,
+                capital: capital,
+                leader: leader,
+                landmark: landmark,
+                subregions: subregions, 
+            });
+            const updated = await newRegion.save();
+            if(updated) {
+                console.log(newRegion)
+                return newRegion
+            }
         },
     }
 

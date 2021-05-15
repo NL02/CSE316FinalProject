@@ -24,8 +24,6 @@ const Update = (props) => {
 				return;
 			}
 		}
-		console.log(input.userEmail)
-		console.log(input)
 		const { loading, error, data } = await Update({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
@@ -54,7 +52,7 @@ const Update = (props) => {
 							<WRow className="modal-col-gap signup-modal">
 								<WCol size="6">
 									<WInput 
-										className="" onBlur={updateInput} name="firstName" labelAnimation="up" 
+										className="" onBlur={updateInput} name="firstName" labelAnimation="fixed" 
 										barAnimation="solid" labelText={"First Name"} wType="outlined" inputType="text" 
                                         placeholderText={userValues ? props.user.firstName : ""}
 									>
@@ -62,7 +60,7 @@ const Update = (props) => {
 								</WCol>
 								<WCol size="6">
 									<WInput 
-										className="" onBlur={updateInput} name="lastName" labelAnimation="up" 
+										className="" onBlur={updateInput} name="lastName" labelAnimation="fixed" 
 										 labelText="Last Name" wType="outlined" inputType="text"
                                         placeholderText={userValues ? props.user.lastName : ""} 
 									/>
@@ -71,13 +69,13 @@ const Update = (props) => {
 
 							<div className="modal-spacer">&nbsp;</div>
 							<WInput 
-								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
+								className="modal-input" onBlur={updateInput} name="email" labelAnimation="fixed" 
 								barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text" 
                                 placeholderText={userValues ? props.user.email : ""}
 							/>
 							<div className="modal-spacer">&nbsp;</div>
 							<WInput 
-								className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
+								className="modal-input" onBlur={updateInput} name="password" labelAnimation="fixed" 
 								barAnimation="solid" labelText="Password" wType="outlined" inputType="password" 
                                 placeholderText="******"
 							/>

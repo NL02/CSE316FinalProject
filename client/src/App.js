@@ -1,9 +1,10 @@
 import './App.css';
-import React            from 'react';
-import Homescreen       from './components/homescreen/Homescreen';
-import { useQuery }     from '@apollo/client';
-import * as queries     from './cache/queries';
-import { jsTPS }        from './utils/jsTPS';
+import React              from 'react';
+import Homescreen         from './components/homescreen/Homescreen';
+import RegionSpreadsheet  from './components/regionSpreadsheet/RegionSpreadsheet'
+import { useQuery }       from '@apollo/client';
+import * as queries       from './cache/queries';
+import { jsTPS }          from './utils/jsTPS';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 function App() {
@@ -24,10 +25,16 @@ function App() {
       <Switch>
         <Redirect exact from="/" to={ {pathname:"/home"}} />
         <Route  
-          path="/home"
+          exact path="/home"
           name="home"
           render={() => 
             <Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTPS={refreshTps}/>
+          }
+        />
+        <Route
+          path="/home/:name"
+          render={() => 
+            <RegionSpreadsheet tps={transactionStack} fetchUser={refetch} user={user} refreshTPS={refreshTps}/>
           }
         />
       </Switch>

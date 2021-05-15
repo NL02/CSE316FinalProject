@@ -24,12 +24,12 @@ const MapContents = (props) => {
                    </div>
                 </WLSide>
                 <WLMain style={{ backgroundColor: "ivory"}}>
-                insert maps 
                 {
-                    props.mapData.map((entry) => (
+                    props.mapData.map((entry, index) => (
                         <MapEntry
-                            data={entry} key={entry._id} mapData={props.mapData}
+                            data={entry} key={entry._id} mapData={props.mapData} index={index}
                             setShowDeleteMap={props.setShowDeleteMap}  setLookingAt={props.setLookingAt}
+                            handleMapSelection={props.handleMapSelection}
                             // editItem={props.editItem}   reorderItem={props.reorderItem}
                         />
                     ))

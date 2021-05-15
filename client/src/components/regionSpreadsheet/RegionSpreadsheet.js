@@ -6,45 +6,49 @@ import CreateMap                        from '../modals/CreateMap';
 import DeleteMap                        from '../modals/DeleteMap'
 import Landing                          from '../main/Landing';
 import NavbarOptions 					from '../navbar/NavbarOptions';
-import MapContents                      from '../main/MapContents';
+import RegionContents                   from '../main/RegionContents';
 import { GET_DB_MAPS}                   from '../../cache/queries'
 import React, { useState } 				from 'react';
-import { useQuery }                     from '@apollo/client';
-import{ Link, useHistory }                          from "react-router-dom";
-// import { useMutation, useQuery } 		from '@apollo/client';
+import { useMutation, useQuery } 		from '@apollo/client';
+import * as mutations                   from '../../cache/mutations'
+import{ Link, useHistory, useParams }                          from "react-router-dom";
 import { WNavbar, WNavItem } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WButton } from 'wt-frontend';
 
-const Homescreen = (props) => {
+const RegionSpreadsheet = (props) => {
     const auth = props.user === null ? false : true;
-    let maplists = [];
-    let MapData = [];
+    let RegionList = [];
+    let RegionData = [];
     let history = useHistory();
-    const [activeMap, setActiveMap]         = useState({})
+    const {name} = useParams();
+    console.log(props)
+    const [activeRegion, setActiveRegion]         = useState({})
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
     const [showUpdate, toggleShowUpdate] 	= useState(false);
     const [showCreateMap, toggleShowCreateMap] = useState(false);
     const [showDeleteMap, toggleShowDeleteMap] = useState(false);
     const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
-    
     if (loading) { console.log(loading, 'loading');}
     if (error) { console.log(error, 'error');}
     if (data) {
-        // Assign maplists
+        console.log(data)
         for (let map of data.getAllMaps) {
-            maplists.push(map)
+            if (map.name === name) {
+                RegionList.push(map)
+            }
         }
-        console.log(props.user)
-        for(let map of maplists) {
-            if (map) {
-                MapData.push({_id: map._id, name: map.name})
+        console.log(RegionList)
+        for (let region of RegionList){
+            if (region) {
+                RegionData.push({_id: region._id, name: region.name, capital: region.capital, 
+                    leader: region.leader, landmark: region.landmark, subregion: region.subregion})
             }
         }
     }
-    const loadMapList = (list) => {
+    const loadRegionList = (list) => {
         props.tps.clearAllTransaction();
-        setActiveMap(list)
+        setActiveRegion(list)
     }
 
     const setShowLogin = () => {
@@ -86,16 +90,21 @@ const Homescreen = (props) => {
         toggleShowCreateMap(!showCreateMap);
     }
 
-    const handleMapSelection = (name) => {
-        history.push(`/home/${name}`)
-    }
+    // const [AddSubRegion]                = useMutation(mutations.ADD_REGION);
 
-    const handleLogoutURL = () => {
-        history.push(`/home`)
-    }
-    // method that handles when clicking on a map and changing the route to the map's region
-    const setLookingAt = (listId) => {
-        setActiveMap(listId)
+    const addRegion = async (parent) => {
+        const newRegion=  {
+            _id: '',
+            name: 'No Name',
+            capital: 'No Capital',
+            leader: 'No Leader', 
+            landmark: [],
+            subregions: []
+        }
+        let opcode = 1; 
+        let itemID = newRegion._id;
+        let parentID = parent._id;
+        // let transaction = new AddSubRegion_Transaction(parentID, itemID, newSubRegion, opcode, AddSubRegion)
     }
     return ( 
         <WLayout wLayout="header">
@@ -112,8 +121,8 @@ const Homescreen = (props) => {
 						<NavbarOptions
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
-                            setShowUpdate={setShowUpdate}   handleLogoutURL={handleLogoutURL}
-							reloadTodos={refetch} 			setActivemap={loadMapList}
+                            setShowUpdate={setShowUpdate}   
+							reloadTodos={refetch} 			setActiveMap={loadRegionList}
 						/>
 					</ul>
 				</WNavbar>
@@ -122,13 +131,19 @@ const Homescreen = (props) => {
                     {
                         auth ?
                             <div className="container-secondary">
-                                <MapContents 
+                                {/* <MapContents 
                                 mapData={MapData} auth={auth}   
                                 setShowCreateMap={setShowCreateMap} setShowDeleteMap={setShowDeleteMap}
                                 setLookingAt={setLookingAt} handleMapSelection={handleMapSelection}
                                 // updateMapName={updateMapName}
                                 activeMap={activeMap}
-                                /> 
+                                />  */}
+                                <RegionContents 
+                                RegionData={RegionData} auth={auth}
+                                // set delete confirmation
+                                // sorting
+                                // adding maps
+                                />
                             </div>
                             :
                             <div className="container-secondary">  
@@ -148,11 +163,12 @@ const Homescreen = (props) => {
             {
                 showCreateMap && (<CreateMap fetchUser={props.fetchUser} setShowCreateMap={setShowCreateMap} user={props.user}/>)
             }
-            {   
+             {/*Delete map will become delete Subregion  */}
+            {/* {   
                 showDeleteMap && (<DeleteMap fetchUser={props.fetchUser} setShowDeleteMap={setShowDeleteMap} activeMap={activeMap} user={props.user}/>)
-            }
+            } */}
         </WLayout>
     );
 }
 
-export default Homescreen;
+export default RegionSpreadsheet;

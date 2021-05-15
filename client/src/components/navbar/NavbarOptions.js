@@ -4,10 +4,9 @@ import { useMutation, useApolloClient }     from '@apollo/client';
 import { WButton, WNavItem }                from 'wt-frontend';
 import { GET_DB_USER }                      from '../../cache/queries'
 import { useQuery }                         from '@apollo/client';
-
+import { Link }                             from 'react-router-dom'
 const LoggedIn = (props) => {
     const client = useApolloClient();
-    console.log()
 	const [Logout] = useMutation(LOGOUT);
     const { data } = useQuery(GET_DB_USER);
     console.log(data.getCurrentUser.firstName)
@@ -22,9 +21,6 @@ const LoggedIn = (props) => {
         }
     };
     
-    const print = async (e) => {
-        console.log(props)
-    }
 
     return (
         <>
@@ -35,7 +31,10 @@ const LoggedIn = (props) => {
         </WNavItem >
         <WNavItem hoverAnimation="lighten">
             <WButton className="navbar-options" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
+            <Link to="/home">
                 Logout
+            </Link>
+
             </WButton>
         </WNavItem >
         </>

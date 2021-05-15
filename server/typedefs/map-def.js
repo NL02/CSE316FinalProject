@@ -21,13 +21,14 @@ const typeDefs = gql `
     extend type Mutation {
         addMap( map: MapInput!): Map
         deleteMap(_id: String!): Boolean
+        addRegion(region: RegionInput!): Region
     }
 
     input MapInput {
         _id: String
         name: String
         owner: String
-        regions: [RegionInput]
+        regions: [String]
     }
 
     input RegionInput {
@@ -36,7 +37,7 @@ const typeDefs = gql `
         capital: String
         leader: String
         landmark: [String]
-        subregions:[RegionInput]
+        subregions:[String]
     }
 `;
 

@@ -41,6 +41,19 @@ export const LOGOUT = gql`
 	}
 `;
 
+export const ADD_REGION = gql`
+	mutation Addregion($region: RegionInput!) {
+		addRegion(region: $region) {
+			_id
+			name
+			capital
+			leader
+			landmark
+			subregions
+		}
+	}
+`;
+
 export const ADD_MAP = gql`
 	mutation AddMap($map: MapInput!) {
 		addMap(map: $map) {

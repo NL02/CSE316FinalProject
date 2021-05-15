@@ -5,17 +5,22 @@ const MapEntry = (props) => {
     const { data } = props;
 
     const name = data.name;
-
+    console.log(props)
     const handleDelete = async (e) => {
         // console.log(e.target.id)
         props.setShowDeleteMap()
-        props.setLookingAt(e.target.id)
+        // props.setLookingAt(e.target.id)
         console.log(props)
     }
+    const handleMapSelection = async (e) => {
+
+        props.handleMapSelection(props.data.name)
+    }
+
     return (
-        <WRow className="table-entry">
+        <WRow className="table-entry" >
             <WCol size="9">
-                <div>{name}</div>
+                <div onClick={handleMapSelection}>{name}</div>
             </WCol>
             <WCol size="3">
                 <WButton className="table-entry-buttons" onClick={handleDelete} wType="texted">
