@@ -1,10 +1,10 @@
 @use 'node_modules/wt-frontend/build/global/theme' with (
-    $primary-color: #ffc800,
-    $background-color: rgb(64, 69, 78),//#d9d6cc,
-    $navbar-background-color: #353a44,//rgb(64, 69, 78),
+    $primary-color: #a19e92,
+    $background-color: rgb(38, 40, 43),//#d9d6cc,
+    $navbar-background-color: #101011,//rgb(64, 69, 78),
     $sidebar-background-color: #2b2e36,//#353a44,
-    $text-color: #97a3ac,
-    $modal-background: rgb(64, 69, 78),
+    $text-color: #131516,
+    $modal-background: rgb(25, 27, 31),
     $modal-section-padding: 24px,
     $modal-radius: 4px,
     $modal-border: 1px solid rgb(87, 93, 105),
@@ -54,6 +54,9 @@ html, body {
     -moz-osx-font-smoothing: grayscale;
     background-color: $background-color;
 }
+.landing {
+    background-color: $background-color
+}
 
 .complete-task {
     color: var(--light-blue);
@@ -98,7 +101,7 @@ html, body {
 }
 
 .logo {
-	color: $primary-color;
+	color: rgb(255, 151, 81);
     font-size: 1.5rem;
     font-family: "Roboto Mono", monospace;
     text-transform: uppercase;
@@ -184,19 +187,9 @@ html, body {
     background-color: var(--deep-blue-lighter);
 }
 
-.table-input {
-    /*background-color: var(--deep-blue-lighter);
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid;
-    margin: 0;
-    padding:0;
-    font-family: 'Roboto';
-    font-size: 14px;
-    color: var(--light-gray);*/
+.create-account {
+    color: rgb(194, 114, 231)
 }
-
 .table-select {
     font-family: Roboto;
     //font-size: 14px;
@@ -207,12 +200,12 @@ html, body {
 }
 
 .modal-header {
-    color: $text-color;
+    color: gainsboro;
     font-size: 28px;
 }
 
 .navbar-options {
-    color: $text-color;
+    color: gainsboro;
     font-size: 16px;
 }
 
@@ -231,4 +224,23 @@ html, body {
 .table-entry-buttons-disabled {
     color: var(--warm-black);
     cursor: default;
+}
+
+//Things I added
+.landingGlobe {
+    font-size: 200% ;
+    color:rgb(163, 169, 180);
+}
+
+.center {
+    margin: auto;
+}
+.mapHeader {
+    font-size: 150%;
+    background-color: #101011;
+    color: gainsboro;
+
+}
+.mapListing {
+    background-color: lightcoral;
 }

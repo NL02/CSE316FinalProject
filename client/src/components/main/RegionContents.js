@@ -1,14 +1,14 @@
 import React            from 'react';
-import MapEntry         from './MapEntry';
+import RegionEntry         from './RegionEntry';
 import RegionSpreadSheetHeader from './RegionSpreadSheetHeader'
-import {WLayout, WLHeader, WLSide, WLMain, WLFooter, WButton, WRow, WCol} from 'wt-frontend';
+import {WLayout, WLHeader, WLMain, WRow, WCol} from 'wt-frontend';
 
 const RegionContents = (props) => {
     console.log("THIS IS REGIONS ")
-    console.log(props)
+    console.log(props.RegionData)
     return (
         <div className=' table-entries container-primary '>
-            <RegionSpreadSheetHeader></RegionSpreadSheetHeader>
+            <RegionSpreadSheetHeader parent={props.RegionParent} addRegion={props.addRegion}></RegionSpreadSheetHeader>
             
             <WLayout wLayout="header">
                 <WLHeader style={{ backgroundColor: "salmon"}}>
@@ -32,17 +32,21 @@ const RegionContents = (props) => {
                 </WLHeader>
                 <WLMain style={{ backgroundColor: "ivory"}}>
                 {/* {
-                    props.mapData.map((entry) => (
+                    props.mapData.map((entry, index) => (
                         <MapEntry
-                            data={entry} key={entry._id} mapData={props.mapData}
-                            setShowDeleteMap={props.setShowDeleteMap}  setLookingAt={props.setLookingAt}
+                            data={entry} key={entry._id} mapData={props.mapData} index={index}
+                            setShowDeleteMap={props.setShowDeleteMap} setLookingAt={props.setLookingAt}
                             handleMapSelection={props.handleMapSelection}
                             // editItem={props.editItem}   reorderItem={props.reorderItem}
                         />
                     ))
-                }    */}
+                } */}
                 {
-                    
+                 props.RegionData.map( (entry, index) => {
+                     <RegionEntry 
+                     data={entry} key={entry._id} index={index}
+                     />
+                 })   
                 }
                 </WLMain>
             </WLayout>

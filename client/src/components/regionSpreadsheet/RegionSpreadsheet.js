@@ -19,7 +19,7 @@ const RegionSpreadsheet = (props) => {
     const auth = props.user === null ? false : true;
     let RegionList = [];
     let RegionData = [];
-    let history = useHistory();
+
     const {name} = useParams();
     console.log(props)
     const [activeRegion, setActiveRegion]         = useState({})
@@ -32,18 +32,15 @@ const RegionSpreadsheet = (props) => {
     if (loading) { console.log(loading, 'loading');}
     if (error) { console.log(error, 'error');}
     if (data) {
+        console.log(name)
         console.log(data)
         for (let map of data.getAllMaps) {
-            if (map.name === name) {
+            if (map._id === name) {
                 RegionList.push(map)
             }
         }
-        console.log(RegionList)
-        for (let region of RegionList){
-            if (region) {
-                RegionData.push({_id: region._id, name: region.name, capital: region.capital, 
-                    leader: region.leader, landmark: region.landmark, subregion: region.subregion})
-            }
+        for (let region of RegionList[0].regions) {
+            RegionData.push(region)
         }
     }
     const loadRegionList = (list) => {
@@ -90,21 +87,26 @@ const RegionSpreadsheet = (props) => {
         toggleShowCreateMap(!showCreateMap);
     }
 
-    // const [AddSubRegion]                = useMutation(mutations.ADD_REGION);
+    const [AddRegion]                = useMutation(mutations.ADD_REGION);
 
-    const addRegion = async (parent) => {
+    const createNewRegion = async () => {
+        let parent = RegionList[0]
         const newRegion=  {
             _id: '',
             name: 'No Name',
             capital: 'No Capital',
             leader: 'No Leader', 
             landmark: [],
-            subregions: []
+            parentId: parent._id,
         }
         let opcode = 1; 
         let itemID = newRegion._id;
-        let parentID = parent._id;
+        let parentId = parent._id;
         // let transaction = new AddSubRegion_Transaction(parentID, itemID, newSubRegion, opcode, AddSubRegion)
+        const { data } = await AddRegion({ variables: { region: newRegion }, refetchQueries: [{ query: GET_DB_MAPS }] });
+        if (data) {
+            console.log(data)
+        }
     }
     return ( 
         <WLayout wLayout="header">
@@ -139,6 +141,7 @@ const RegionSpreadsheet = (props) => {
                                 activeMap={activeMap}
                                 />  */}
                                 <RegionContents 
+                                RegionParent={RegionList[0]} addRegion={createNewRegion}
                                 RegionData={RegionData} auth={auth}
                                 // set delete confirmation
                                 // sorting

@@ -1,7 +1,6 @@
 const { model, Schema, ObjectId } = require('mongoose');
-const subregion = require('./subregion-model').schema;
 
-const regionSchema = new Schema(
+const subregionSchema = new Schema(
 	{
 		_id: {
 			type: ObjectId,
@@ -22,8 +21,8 @@ const regionSchema = new Schema(
 		landmark: [{
             type: String,
             required: false
-        }]
+        }],
 	}
 );
-const Region = model('Region', regionSchema);
-module.exports = Region;
+const SubRegion = model('subRegion', subregionSchema);
+module.exports = SubRegion;

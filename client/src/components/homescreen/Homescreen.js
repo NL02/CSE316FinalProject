@@ -32,6 +32,7 @@ const Homescreen = (props) => {
     if (error) { console.log(error, 'error');}
     if (data) {
         // Assign maplists
+        console.log(data)
         for (let map of data.getAllMaps) {
             maplists.push(map)
         }
@@ -87,7 +88,7 @@ const Homescreen = (props) => {
     }
 
     const handleMapSelection = (name) => {
-        history.push(`/home/${name}`)
+        history.push(`home/${name}`)
     }
 
     const handleLogoutURL = () => {
@@ -103,7 +104,7 @@ const Homescreen = (props) => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-                            <Link to="/home">
+                            <Link to={`${auth}`}>
 							<Logo className='logo' />
                             </Link>
 						</WNavItem>

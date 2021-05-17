@@ -11,7 +11,7 @@ module.exports = {
             if (maplists) {
                 return (maplists);
             }
-        }
+        },
     },
     Mutation: {
         addMap: async(_, args) => {
@@ -26,7 +26,6 @@ module.exports = {
             });
             const updated = await newMap.save();
             if (updated) {
-                // console.log(newMap)
                 return newMap;
             }
         },
@@ -40,22 +39,26 @@ module.exports = {
         },
         
         addRegion: async(_, args) => {
-            const { subregion } = args;
+            const { region } = args;
             const objectId = new ObjectId();
-            const { id, name, capital, leader, landmark, subregions} = subregion;
+            const { id, name, capital, leader, landmark, parentId, subregion} = region;
+            const parent = await Map.findOne({_id: parentId})
             const newRegion = new Region({
                 _id: objectId,
                 name: name,
                 capital: capital,
                 leader: leader,
                 landmark: landmark,
-                subregions: subregions, 
+                subregion: subregion 
             });
-            const updated = await newRegion.save();
+            if(!parent) return ('Parent not found');
+            let subregionList = parent.regions;
+            subregionList.push(newRegion)
+            const updated = await Map.updateOne({_id: parentId}, {regions: subregionList})
             if(updated) {
                 console.log(newRegion)
                 return newRegion
-            }
+            } else return('Could not add subregion')
         },
     }
 

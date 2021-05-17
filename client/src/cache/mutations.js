@@ -49,7 +49,6 @@ export const ADD_REGION = gql`
 			capital
 			leader
 			landmark
-			subregions
 		}
 	}
 `;
@@ -61,12 +60,10 @@ export const ADD_MAP = gql`
 			name
 			owner
 			regions {
-				_id
 				name
 				capital
 				leader
 				landmark
-				subregions
 			}
 		}
 	}

@@ -9,12 +9,12 @@ const MapEntry = (props) => {
     const handleDelete = async (e) => {
         // console.log(e.target.id)
         props.setShowDeleteMap()
-        // props.setLookingAt(e.target.id)
+        props.setLookingAt(e.target.id)
         console.log(props)
     }
     const handleMapSelection = async (e) => {
 
-        props.handleMapSelection(props.data.name)
+        props.handleMapSelection(props.data._id)
     }
 
     return (

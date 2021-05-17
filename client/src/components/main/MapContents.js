@@ -2,20 +2,26 @@ import React            from 'react';
 import MapEntry         from './MapEntry';
 import {WLayout, WLHeader, WLSide, WLMain, WLFooter} from 'wt-frontend';
 import WButton from 'wt-frontend/build/components/wbutton/WButton';
+import globe from "../../media/redGlobe.png"
+
 
 const MapContents = (props) => {
     return (
-        <div className=' table-entries container-primary '>
+        <div className='container-primary'>
     
-            <WLayout wLayout="header-rside">
-                <WLHeader style={{ backgroundColor: "salmon"}}>
-                Your Maps
+            <WLayout wLayout="header-rside" className="mapContainer">
+                <WLHeader classname="enter">
+                    <p className="mapHeader">Your Maps</p>
                 </WLHeader>
-                <WLSide side="right" style={{ backgroundColor: "lightskyblue", overflow:"auto"}}>
+                <WLSide side="right" style={{ backgroundColor: "gainsboro", overflow:"auto"}}>
                     <div>
                     <WLayout wLayout="footer">
-                    <WLMain style={{ backgroundColor: "ivory"}}>Insert Globe</WLMain>
-                    <WLFooter style={{ backgroundColor: "aquamarine"}}>
+                    <WLMain>
+                        <div>
+                            <img src={globe} className="sideGlobe"></img>
+                        </div>
+                    </WLMain>
+                    <WLFooter>
                         <WButton onClick={props.setShowCreateMap}>
                             Create New Map
                         </WButton>
@@ -23,12 +29,12 @@ const MapContents = (props) => {
                    </WLayout>
                    </div>
                 </WLSide>
-                <WLMain style={{ backgroundColor: "ivory"}}>
+                <WLMain style={{ backgroundColor: "lightcoral"}}>
                 {
                     props.mapData.map((entry, index) => (
                         <MapEntry
                             data={entry} key={entry._id} mapData={props.mapData} index={index}
-                            setShowDeleteMap={props.setShowDeleteMap}  setLookingAt={props.setLookingAt}
+                            setShowDeleteMap={props.setShowDeleteMap} setLookingAt={props.setLookingAt}
                             handleMapSelection={props.handleMapSelection}
                             // editItem={props.editItem}   reorderItem={props.reorderItem}
                         />
