@@ -37,7 +37,38 @@ module.exports = {
             if(deleted) return true;
             else return false
         },
-        
+        deleteRegion: async (_, args) => {
+            const { mapId, regionId} = args 
+            const mapID = new ObjectId(mapId);
+            const found = await Map.findOne({_id: mapID});
+            let regionItems = found.regions;
+            otherRegions = regionItems.filter(item => item._id.toString() !== regionId);
+            ItemDeleted = regionItems.filter(item => item._id.toString() === regionId);
+            const updated = await Map.updateOne({_id: mapID}, {regions: otherRegions})
+            if(updated) return(ItemDeleted)
+            else return(otherRegions)
+        },
+        updateItemField: async (_,args) => {
+            const { _id, itemId, field } = args;
+            let { value } = args
+            const mapId = new ObjectId(_id);
+            const found = await Map.findOne({_id: mapId});
+            let regionItems = found.regions;
+            regionItems.map(item => {
+                if (item._id.toString() === itemId) {
+                    item[field] = value;
+                }
+            })
+            // console.log("Update???")
+            // console.log(mapId)
+            // console.log(itemId)
+            // console.log(field)
+            // console.log(value)
+            // console.log(regionItems)
+            const updated = await Map.updateOne({_id: mapId}, {regions: regionItems})
+            if(updated) return(regionItems);
+            else return(found.regions)
+        },
         addRegion: async(_, args) => {
             const { region } = args;
             const objectId = new ObjectId();

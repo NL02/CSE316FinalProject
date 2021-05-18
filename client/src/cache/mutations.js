@@ -41,6 +41,17 @@ export const LOGOUT = gql`
 	}
 `;
 
+export const UPDATE_ITEM_FIELD = gql`
+	mutation UpdateItemField($_id: String!, $itemId: String!, $field: String!, $value: String!) {
+		updateItemField(_id: $_id, itemId: $itemId, field: $field, value: $value) {
+			_id
+			name
+			capital
+			leader
+			landmark
+		}
+	}
+`;
 export const ADD_REGION = gql`
 	mutation Addregion($region: RegionInput!) {
 		addRegion(region: $region) {
@@ -52,6 +63,19 @@ export const ADD_REGION = gql`
 		}
 	}
 `;
+
+export const DELETE_REGION = gql`
+	mutation Deleteregion($mapId: String!, $regionId: String!) {
+		deleteRegion(mapId: $mapId, regionId: $regionId) {
+			_id
+			name
+			capital
+			leader
+			landmark
+		}
+	}
+`;
+
 
 export const ADD_MAP = gql`
 	mutation AddMap($map: MapInput!) {

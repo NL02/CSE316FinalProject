@@ -8,11 +8,17 @@ const RegionContents = (props) => {
     console.log(props.RegionData)
     return (
         <div className=' table-entries container-primary '>
-            <RegionSpreadSheetHeader parent={props.RegionParent} addRegion={props.addRegion}></RegionSpreadSheetHeader>
+            <RegionSpreadSheetHeader 
+            parent={props.RegionParent} addRegion={props.addRegion}
+            undo={props.undo} redo={props.redo}
+            canUndo={props.canUndo} canRedo={props.canRedo}
+            />
             
             <WLayout wLayout="header">
-                <WLHeader style={{ backgroundColor: "salmon"}}>
+                <WLHeader className="regionHeader mapName" style={{ backgroundColor: "salmon"}}>
                     <WRow>
+                        <WCol size="1">
+                        </WCol>
                         <WCol size="2">
                             Name
                         </WCol>
@@ -25,28 +31,19 @@ const RegionContents = (props) => {
                         <WCol size="2">
                             Flag
                         </WCol>
-                        <WCol size="4">
+                        <WCol size="3">
                             Landmarks
                         </WCol>
                     </WRow>
                 </WLHeader>
                 <WLMain style={{ backgroundColor: "ivory"}}>
-                {/* {
-                    props.mapData.map((entry, index) => (
-                        <MapEntry
-                            data={entry} key={entry._id} mapData={props.mapData} index={index}
-                            setShowDeleteMap={props.setShowDeleteMap} setLookingAt={props.setLookingAt}
-                            handleMapSelection={props.handleMapSelection}
-                            // editItem={props.editItem}   reorderItem={props.reorderItem}
-                        />
-                    ))
-                } */}
                 {
-                 props.RegionData.map( (entry, index) => {
+                 props.RegionData.map((entry, index) => (
                      <RegionEntry 
                      data={entry} key={entry._id} index={index}
+                     editItem={props.editItem} deleteItem={props.deleteItem}
                      />
-                 })   
+                 ))   
                 }
                 </WLMain>
             </WLayout>

@@ -3,17 +3,18 @@ import Login                            from '../modals/Login';
 import CreateAccount 					from '../modals/CreateAccount';
 import Update                           from '../modals/Update';
 import CreateMap                        from '../modals/CreateMap';
-import DeleteMap                        from '../modals/DeleteMap'
 import Landing                          from '../main/Landing';
 import NavbarOptions 					from '../navbar/NavbarOptions';
-import RegionContents                   from '../main/RegionContents';
+import RegionContents                   from './RegionContents';
 import { GET_DB_MAPS}                   from '../../cache/queries'
 import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import * as mutations                   from '../../cache/mutations'
-import{ Link, useHistory, useParams }                          from "react-router-dom";
+import{ Link, useParams }                          from "react-router-dom";
 import { WNavbar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WButton } from 'wt-frontend';
+import { WLayout, WLHeader, WLMain} from 'wt-frontend';
+import { 
+	EditItem_Transaction } 				from '../../utils/jsTPS';
 
 const RegionSpreadsheet = (props) => {
     const auth = props.user === null ? false : true;
@@ -21,19 +22,19 @@ const RegionSpreadsheet = (props) => {
     let RegionData = [];
 
     const {name} = useParams();
-    console.log(props)
     const [activeRegion, setActiveRegion]         = useState({})
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
     const [showUpdate, toggleShowUpdate] 	= useState(false);
     const [showCreateMap, toggleShowCreateMap] = useState(false);
     const [showDeleteMap, toggleShowDeleteMap] = useState(false);
+    
     const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
     if (loading) { console.log(loading, 'loading');}
     if (error) { console.log(error, 'error');}
     if (data) {
-        console.log(name)
-        console.log(data)
+        // console.log(name)
+        // console.log(data)
         for (let map of data.getAllMaps) {
             if (map._id === name) {
                 RegionList.push(map)
@@ -87,8 +88,43 @@ const RegionSpreadsheet = (props) => {
         toggleShowCreateMap(!showCreateMap);
     }
 
-    const [AddRegion]                = useMutation(mutations.ADD_REGION);
 
+    const reloadRegion = async () => {
+        setActiveRegion()
+    }
+    const mutationOptions = {
+		refetchQueries: [{ query: GET_DB_MAPS }], 
+		awaitRefetchQueries: true,
+        reloadRegion
+	}
+    const [canUndo, setCanUndo]     = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo]     = useState(props.tps.hasTransactionToRedo());
+    const [UpdateItemField]         = useMutation(mutations.UPDATE_ITEM_FIELD, mutationOptions)
+    const [AddRegion]               = useMutation(mutations.ADD_REGION, mutationOptions);
+    const [DeleteRegion]            = useMutation(mutations.DELETE_REGION, mutationOptions)
+
+
+    const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+    const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+    const handleEditItem = async(itemID, field, value, prev) => {
+        let transaction = new EditItem_Transaction(name, itemID, field, value, prev, UpdateItemField);
+        props.tps.addTransaction(transaction)
+        tpsRedo();
+    }
     const createNewRegion = async () => {
         let parent = RegionList[0]
         const newRegion=  {
@@ -102,8 +138,26 @@ const RegionSpreadsheet = (props) => {
         let opcode = 1; 
         let itemID = newRegion._id;
         let parentId = parent._id;
-        // let transaction = new AddSubRegion_Transaction(parentID, itemID, newSubRegion, opcode, AddSubRegion)
+        // let transaction = new UpdateMapRegions_Transaction(name, itemID, newSubRegion, opcode, AddSubRegion)
         const { data } = await AddRegion({ variables: { region: newRegion }, refetchQueries: [{ query: GET_DB_MAPS }] });
+        if (data) {
+            console.log(data)
+        }
+    }
+    const handleDeleteItem = async(regionid, regionName, capital, leader, landmark, index) => {
+        // let opcode = 0
+        // let regionToDelete = {
+        //     _id: regionId,
+        //     name: regionName,
+        //     capital: capital,
+        //     leader: leader,
+        //     landmark: landmark
+        // }
+        // let transaction = new UpdateMapRegions_Transaction(name, regionID, regionToDelete, 
+        //     opcode, AddRegionItem, DeleteRegionItem, index);
+        // props.tps.addTransaction(transaction);
+        // tpsRedo(); 
+        const { data } = await DeleteRegion({variables: {mapId: name, regionId: regionid}, refetchQueries: [{ query: GET_DB_MAPS }]})
         if (data) {
             console.log(data)
         }
@@ -133,15 +187,11 @@ const RegionSpreadsheet = (props) => {
                     {
                         auth ?
                             <div className="container-secondary">
-                                {/* <MapContents 
-                                mapData={MapData} auth={auth}   
-                                setShowCreateMap={setShowCreateMap} setShowDeleteMap={setShowDeleteMap}
-                                setLookingAt={setLookingAt} handleMapSelection={handleMapSelection}
-                                // updateMapName={updateMapName}
-                                activeMap={activeMap}
-                                />  */}
                                 <RegionContents 
                                 RegionParent={RegionList[0]} addRegion={createNewRegion}
+                                editItem={handleEditItem} deleteItem={handleDeleteItem}
+                                canUndo={canUndo} canRedo={canRedo}
+                                undo={tpsUndo}  redo={tpsRedo}
                                 RegionData={RegionData} auth={auth}
                                 // set delete confirmation
                                 // sorting

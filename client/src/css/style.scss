@@ -3,7 +3,7 @@
     $background-color: rgb(38, 40, 43),//#d9d6cc,
     $navbar-background-color: #101011,//rgb(64, 69, 78),
     $sidebar-background-color: #2b2e36,//#353a44,
-    $text-color: #131516,
+    $text-color: #8f989c,
     $modal-background: rgb(25, 27, 31),
     $modal-section-padding: 24px,
     $modal-radius: 4px,
@@ -155,6 +155,7 @@ html, body {
     color: $text-color;
     transition: 0.05s ease-in-out;
     height: 46px;
+    text-align: center;
 }
 
 .table-entry:hover {
@@ -243,4 +244,15 @@ html, body {
 }
 .mapListing {
     background-color: lightcoral;
+}
+.regionHeader {
+    color: gainsboro
+}
+
+.addRegion{
+    background-color: $background-color;
+    color: gainsboro;
+}
+.mapName {
+    color: rgb(37, 34, 34)
 }

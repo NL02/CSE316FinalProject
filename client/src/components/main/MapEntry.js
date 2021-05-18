@@ -18,12 +18,12 @@ const MapEntry = (props) => {
     }
 
     return (
-        <WRow className="table-entry" >
-            <WCol size="9">
+        <WRow className="table-entry mapName" >
+            <WCol size="9" >
                 <div onClick={handleMapSelection}>{name}</div>
             </WCol>
             <WCol size="3">
-                <WButton className="table-entry-buttons" onClick={handleDelete} wType="texted">
+                <WButton className="table-entry-buttons mapName" onClick={handleDelete} wType="texted">
                     <i id={data._id}className="material-icons">delete</i>
                 </WButton>
             </WCol>
